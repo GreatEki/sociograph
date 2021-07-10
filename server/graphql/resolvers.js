@@ -1,6 +1,8 @@
 const { User } = require('../models');
 const bcrypt = require('bcryptjs');
 const { UserInputError, AuthenticationError } = require('apollo-server');
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET_KEY } = require('../config/env.json');
 
 module.exports = {
 	Query: {
@@ -73,7 +75,7 @@ module.exports = {
 			const { username, password } = args;
 			let validationErrors = {};
 
-			// Vlidate user input
+			// Validate user input
 			if (username.trim() === '')
 				validationErrors.username = 'Username cannot be empty';
 
@@ -100,6 +102,12 @@ module.exports = {
 					});
 				}
 
+				// Generate token
+				const token = await jwt.sign({ username }, JWT_SECRET_KEY, {
+					expiresIn: '1h',
+				});
+
+				user.token = token;
 				return user;
 			} catch (err) {
 				throw err;
