@@ -1,6 +1,6 @@
 const { User } = require('../models');
 const bcrypt = require('bcryptjs');
-const { UserInputError } = require('apollo-server');
+const { UserInputError, AuthenticationError } = require('apollo-server');
 
 module.exports = {
 	Query: {
@@ -66,6 +66,43 @@ module.exports = {
 				}
 
 				throw new UserInputError('Bad Input', { error: err });
+			}
+		},
+
+		login: async (_, args) => {
+			const { username, password } = args;
+			let validationErrors = {};
+
+			// Vlidate user input
+			if (username.trim() === '')
+				validationErrors.username = 'Username cannot be empty';
+
+			if (password === '')
+				validationErrors.password = 'Password cannot be empty';
+
+			if (Object.keys(validationErrors).length > 0) {
+				throw new UserInputError('Bad Input', { validationErrors });
+			}
+
+			try {
+				const user = await User.findOne({ where: { username } });
+				validationErrors.username = 'User not found';
+				if (!user) {
+					throw new UserInputError('Not Found', { validationErrors });
+				}
+
+				const correctPassword = await bcrypt.compare(password, user.password);
+
+				if (!correctPassword) {
+					validationErrors.password = 'Email or password is incorrect';
+					throw new AuthenticationError('Invalid Credentials', {
+						validationErrors,
+					});
+				}
+
+				return user;
+			} catch (err) {
+				throw err;
 			}
 		},
 	},
