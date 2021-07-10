@@ -107,8 +107,11 @@ module.exports = {
 					expiresIn: '1h',
 				});
 
-				user.token = token;
-				return user;
+				return {
+					...user.toJSON(),
+					token,
+					createdAt: user.createdAt.toISOString(),
+				};
 			} catch (err) {
 				throw err;
 			}
