@@ -6,7 +6,21 @@ const { JWT_SECRET_KEY } = require('../config/env.json');
 
 module.exports = {
 	Query: {
-		getUsers: async () => {
+		getUsers: async (_, __, context) => {
+			let user;
+			// console.log(context.req.headers);
+			if (context.req && context.req.headers.authorization) {
+				const token = context.req.headers.authorization.split('Bearer ')[1];
+				jwt.verify(token, JWT_SECRET_KEY, (err, decodedToken) => {
+					if (err) {
+						throw new AuthenticationError('Unathenticated');
+					}
+
+					user = decodedToken;
+
+					console.log(user);
+				});
+			}
 			try {
 				const users = await User.findAll();
 
