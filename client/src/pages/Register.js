@@ -3,6 +3,9 @@ import { Container, Row, Col } from 'react-bootstrap';
 import Input from '../component/Input';
 import Button from '../component/Button';
 
+import { useMutation } from '@apollo/client';
+import { REGISTER_USER } from '../graphql/Mutation';
+
 const Register = () => {
 	const [user, setUser] = useState({
 		username: '',
@@ -10,9 +13,24 @@ const Register = () => {
 		password: '',
 		confirmPassword: '',
 	});
+
+	const [error, setError] = useState({});
+
+	const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+		update(_, res) {
+			console.log(res);
+		},
+
+		onError(err) {
+			console.log(err.graphQLErrors[0].extensions.error);
+			setError(err.graphQLErrors[0].extensions.error);
+		},
+	});
+
 	function handleSubmit(e) {
 		e.preventDefault();
-		console.log(user);
+
+		registerUser({ variables: user });
 	}
 
 	const onChange = (e) => {
@@ -58,7 +76,9 @@ const Register = () => {
 						/>
 
 						<div className='flex-center m5'>
-							<Button className={'btn-primary'}>Register</Button>
+							<Button className={'btn-primary'} loading={loading}>
+								Register
+							</Button>
 						</div>
 					</form>
 				</Col>

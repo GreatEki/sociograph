@@ -8,7 +8,7 @@ function App() {
 		<ApolloProvider>
 			<BrowserRouter>
 				<Switch>
-					<Route path={'/'} component={Register} />
+					<Route exact path={'/'} component={Register} />
 				</Switch>
 			</BrowserRouter>
 		</ApolloProvider>
