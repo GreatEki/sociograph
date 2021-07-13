@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Button = (props) => {
+	const { children, className } = props;
 	return (
-		<div className='form_element'>
-			<button onClick={props.handleClick} className={props.className}>
-				{props.children}
+		<div className='formElement'>
+			<button type='submit' className={className}>
+				{children}
 			</button>
 		</div>
 	);
@@ -14,7 +15,8 @@ const Button = (props) => {
 Button.propTypes = {
 	className: PropTypes.string,
 	label: PropTypes.string,
-	handleClick: PropTypes.func.isRequired,
+	// handleClick: PropTypes.func.isRequired,
+	children: PropTypes.string.isRequired,
 };
 
 export default Button;

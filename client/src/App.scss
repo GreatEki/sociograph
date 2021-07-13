@@ -17,16 +17,24 @@ body {
 	margin: 1.5rem;
 }
 
-.formElement {
-	margin: 1.5rem;
-}
-
 .flex-center {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
+.center {
+	margin: 0 auto;
+}
+
+.container {
+	display: grid;
+	place-items: center;
+}
+
+.formElement {
+	margin: 1.5rem;
+}
 .textbox {
 	width: 100%;
 	border: 1px solid;
