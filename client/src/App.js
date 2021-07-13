@@ -1,16 +1,17 @@
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './App.scss';
 import Register from './pages/Register';
+import ApolloProvider from './graphql/ApolloProvider';
 
 function App() {
 	return (
-		<div>
+		<ApolloProvider>
 			<BrowserRouter>
 				<Switch>
 					<Route path={'/'} component={Register} />
 				</Switch>
 			</BrowserRouter>
-		</div>
+		</ApolloProvider>
 	);
 }
 
