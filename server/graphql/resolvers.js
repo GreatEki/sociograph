@@ -15,7 +15,7 @@ module.exports = {
 					const token = context.req.headers.authorization.split('Bearer ')[1];
 					jwt.verify(token, JWT_SECRET_KEY, (err, decodedToken) => {
 						if (err) {
-							throw new AuthenticationError('Unathenticated');
+							throw new AuthenticationError('Unauthenticated');
 						}
 
 						currentUser = decodedToken;
@@ -98,6 +98,7 @@ module.exports = {
 			if (password === '')
 				validationErrors.password = 'Password cannot be empty';
 
+			// Checking if we have errors
 			if (Object.keys(validationErrors).length > 0) {
 				throw new UserInputError('Bad Input', { validationErrors });
 			}

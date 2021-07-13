@@ -1,0 +1,46 @@
+@import '~bootstrap/scss/bootstrap';
+
+$primary: #0275d8;
+
+body {
+	min-height: 100vh;
+	background: linear-gradient(
+		203deg,
+		rgba(131, 58, 180, 0.9) 0%,
+		rgba(253, 29, 29, 0.9) 50%,
+		rgba(252, 276, 69, 0.9) 100%
+	);
+	// background: linear-gradient(red, orange, yellow, green, blue);
+}
+
+.m5 {
+	margin: 1.5rem;
+}
+
+.formElement {
+	margin: 1.5rem;
+}
+
+.flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.textbox {
+	width: 100%;
+	border: 1px solid;
+	height: 40px;
+	padding: 5px 10px;
+	border-radius: 0.3rem;
+}
+
+.btn-primary {
+	width: max-content;
+	padding: 0.5em;
+	background-color: $primary;
+	border-radius: 0.3rem;
+	font-size: 1.1rem;
+	color: white;
+	text-align: center;
+}
