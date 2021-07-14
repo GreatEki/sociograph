@@ -18,14 +18,3 @@ export const REGISTER_USER = gql`
 		}
 	}
 `;
-
-export const SIGN_IN = gql`
-	mutation signInUser($username: String!, $password: String!) {
-		register(username: $username, password: $password) {
-			username
-			email
-			token
-			createdAt
-		}
-	}
-`;

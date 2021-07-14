@@ -7,6 +7,52 @@ const { Op } = require('sequelize');
 
 module.exports = {
 	Query: {
+		login: async (_, args) => {
+			const { username, password } = args;
+			let errors = {};
+
+			// Validate user input
+			if (username.trim() === '') errors.username = 'Username cannot be empty';
+
+			if (password === '') errors.password = 'Password cannot be empty';
+
+			// Checking if we have errors
+			if (Object.keys(errors).length > 0) {
+				throw new UserInputError('Bad Input', { errors });
+			}
+
+			try {
+				const user = await User.findOne({ where: { username } });
+				errors.username = 'User not found';
+				if (!user) {
+					throw new UserInputError('Not Found', { errors });
+				}
+
+				const correctPassword = await bcrypt.compare(password, user.password);
+
+				if (!correctPassword) {
+					errors.password = 'Email or password is incorrect';
+					throw new AuthenticationError('Invalid Credentials', {
+						errors,
+					});
+				}
+
+				// Generate token
+				const token = await jwt.sign({ username }, JWT_SECRET_KEY, {
+					expiresIn: '1h',
+				});
+
+				return {
+					...user.toJSON(),
+					token,
+					createdAt: user.createdAt.toISOString(),
+				};
+			} catch (err) {
+				throw err;
+				// throw new UserInputError('Bad Input', { error: err });
+			}
+		},
+
 		getUsers: async (_, __, context) => {
 			try {
 				let currentUser;
@@ -28,53 +74,6 @@ module.exports = {
 				return users;
 			} catch (err) {
 				console.log(err);
-				throw err;
-			}
-		},
-
-		login: async (_, args) => {
-			const { username, password } = args;
-			let validationErrors = {};
-
-			// Validate user input
-			if (username.trim() === '')
-				validationErrors.username = 'Username cannot be empty';
-
-			if (password === '')
-				validationErrors.password = 'Password cannot be empty';
-
-			// Checking if we have errors
-			if (Object.keys(validationErrors).length > 0) {
-				throw new UserInputError('Bad Input', { validationErrors });
-			}
-
-			try {
-				const user = await User.findOne({ where: { username } });
-				validationErrors.username = 'User not found';
-				if (!user) {
-					throw new UserInputError('Not Found', { validationErrors });
-				}
-
-				const correctPassword = await bcrypt.compare(password, user.password);
-
-				if (!correctPassword) {
-					validationErrors.password = 'Email or password is incorrect';
-					throw new AuthenticationError('Invalid Credentials', {
-						validationErrors,
-					});
-				}
-
-				// Generate token
-				const token = await jwt.sign({ username }, JWT_SECRET_KEY, {
-					expiresIn: '1h',
-				});
-
-				return {
-					...user.toJSON(),
-					token,
-					createdAt: user.createdAt.toISOString(),
-				};
-			} catch (err) {
 				throw err;
 			}
 		},
