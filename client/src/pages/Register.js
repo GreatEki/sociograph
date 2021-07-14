@@ -14,7 +14,11 @@ const Register = () => {
 		confirmPassword: '',
 	});
 
-	const [error, setError] = useState({});
+	const [error, setError] = useState({
+		email: '',
+		username: '',
+		password: '',
+	});
 
 	const [registerUser, { loading }] = useMutation(REGISTER_USER, {
 		update(_, res) {
@@ -37,10 +41,10 @@ const Register = () => {
 		setUser({ ...user, [e.target.name]: e.target.value });
 	};
 	return (
-		<Container>
-			<Row className='container'>
+		<Container className='registerPage'>
+			<Row className='wrapper'>
 				<Col style={{ border: '2px solid orange' }}>
-					<div className='flex-center text-white'>
+					<div className='flex-center'>
 						<h1> Register</h1>
 					</div>
 
@@ -51,6 +55,7 @@ const Register = () => {
 							name={'username'}
 							value={user.username}
 							onChange={onChange}
+							errorText={error.username}
 						/>
 
 						<Input
@@ -59,6 +64,7 @@ const Register = () => {
 							name={'email'}
 							value={user.email}
 							onChange={onChange}
+							errorText={error.email}
 						/>
 						<Input
 							label={'Password'}
@@ -66,6 +72,7 @@ const Register = () => {
 							name={'password'}
 							value={user.password}
 							onChange={onChange}
+							errorText={error.password}
 						/>
 						<Input
 							label={'Confirm Password'}

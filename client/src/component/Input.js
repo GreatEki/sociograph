@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Input = (props) => {
-	const { label, type, value, name, onChange } = props;
+	const { label, type, value, name, onChange, errorText } = props;
 	return (
 		<div className='formElement'>
 			<label htmlFor={name}> {label} </label>
@@ -13,6 +13,7 @@ const Input = (props) => {
 				value={value}
 				name={name}
 			/>
+			<span> {errorText && errorText} </span>
 		</div>
 	);
 };
@@ -23,6 +24,7 @@ Input.propTypes = {
 	value: PropTypes.string,
 	name: PropTypes.string,
 	onChange: PropTypes.func.isRequired,
+	errorText: PropTypes.string,
 };
 
 export default Input;

@@ -1,6 +1,13 @@
 @import '~bootstrap/scss/bootstrap';
 
-$primary: #0275d8;
+$colors: (
+	primary: #0275d8,
+	danger: #df4759,
+);
+
+@function color($color-name) {
+	@return map-get($colors, $color-name);
+}
 
 body {
 	min-height: 100vh;
@@ -27,18 +34,27 @@ body {
 	margin: 0 auto;
 }
 
-.container {
-	display: grid;
-	place-items: center;
+.registerPage {
+	.wrapper {
+		display: grid;
+		place-items: center;
+		background-color: white;
+	}
 }
 
 .formElement {
 	margin: 1.5rem;
+
+	span {
+		color: color(danger);
+		font-size: 12px;
+		font-weight: bold;
+	}
 }
 .textbox {
 	width: 100%;
-	border: 1px solid;
 	height: 40px;
+	border: 1px solid;
 	padding: 5px 10px;
 	border-radius: 0.3rem;
 }
